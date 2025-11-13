@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: .
+    container_name: backend_todo
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGO_URL=mongodb://mongo:27017/mydb
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npx tsx watch src/server.ts
+
+  mongo:
+    image: mongo:6
+    container_name: mongo_db_todo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
